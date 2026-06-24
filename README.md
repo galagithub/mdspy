@@ -6,6 +6,16 @@ A web interface to show mdadm status
 
 The application can be run using Docker.
 
+### Pulling a pre‑built image
+
+You can also pull a pre‑built image from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/galagithub/mdspy:latest
+```
+
+The image is built for amd64, arm64, and arm/v7 (Raspberry Pi or similar boards).
+
 ### Using Docker Compose
 
 ```bash
