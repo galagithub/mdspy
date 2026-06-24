@@ -2,6 +2,8 @@
 
 A web interface to show mdadm status
 
+![Screenshot](assets/screenshot.png)
+
 ## Docker Usage
 
 The application can be run using Docker.
