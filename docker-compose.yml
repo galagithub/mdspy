@@ -1,0 +1,16 @@
+services:
+  mdspy:
+    build: .
+    image_name: mdspy
+    container_name: mdspy
+    restart: unless-stopped
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      # host RAID status
+      - /proc/mdstat:/host/proc/mdstat:ro
+
+      # host block devices
+      - /sys/block:/host/sys/block:ro
