@@ -1,4 +1,9 @@
 <?php
+/* 
+ * mdspy - A web interface to show mdadm status
+ * Copyright (c) 2026, Dragos GALALAE (gala_dragos@yahoo.com)
+ * Licensed under the MIT License.
+ */
 
 function getRaidCapacity($md)
 {
