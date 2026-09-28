@@ -120,8 +120,34 @@ function parseMdstat()
     return $arrays;
 }
 
+// MQTT Configuration
+$mqttEnabled = getenv('MQTT_ENABLED') !== false && strtolower(getenv('MQTT_ENABLED')) === 'true';
+$mqttHost = getenv('MQTT_HOST') ?: 'mqtt';
+$mqttPort = (int)(getenv('MQTT_PORT') ?: 1883);
+$mqttTopic = getenv('MQTT_TOPIC') ?: 'mdspy/status';
+$mqttUsername = getenv('MQTT_USERNAME') ?: '';
+$mqttPassword = getenv('MQTT_PASSWORD') ?: '';
+
 $arrays = parseMdstat();
 
+// MQTT Publishing
+if ($mqttEnabled && class_exists('Mosquitto\Client')) {
+    try {
+        $mqtt = new Mosquitto\Client();
+        $mqtt->connect($mqttHost, $mqttPort, 60);
+        
+        if (!empty($mqttUsername) &&!empty($mqttPassword)) {
+            $mqtt->username_pw_set($mqttUsername, $mqttPassword);
+        }
+        
+        $payload = json_encode($arrays);
+        $mqtt->publish($mqttTopic, $payload);
+        $mqtt->disconnect();
+    } catch (Exception $e) {
+        // Silently fail to not break the web interface
+        // error_log("MQTT Error: ". $e->getMessage());
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -241,16 +267,6 @@ tbody tr:hover {
     </select>
 </div>
 
-<script>
-document.getElementById('refreshDropdown').addEventListener('change', function() {
-    var interval = this.value;
-    var metaRefresh = document.querySelector('meta[http-equiv="refresh"]');
-    if (metaRefresh) {
-        metaRefresh.setAttribute('content', interval);
-    }
-});
-</script>
-
 <table>
     <thead>
         <tr>
@@ -345,6 +361,16 @@ $icon = match ($array['health']) {
     &middot;
     Client IP: <?= htmlspecialchars($_SERVER['REMOTE_ADDR'] ?? 'Unknown') ?>
 </div>
+
+<script>
+document.getElementById('refreshDropdown').addEventListener('change', function() {
+    var interval = this.value;
+    var metaRefresh = document.querySelector('meta[http-equiv="refresh"]');
+    if (metaRefresh) {
+        metaRefresh.setAttribute('content', interval);
+    }
+});
+</script>
 
 </body>
 </html>
