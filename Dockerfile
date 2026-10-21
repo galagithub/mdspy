@@ -2,7 +2,7 @@
 # Copyright (c) 2026, Dragos GALALAE (gala_dragos@yahoo.com)
 # Licensed under the MIT License.
 
-FROM php:8.3-apache
+FROM php:8.5-apache
 
 COPY mdspy.php /var/www/html/index.php
 
