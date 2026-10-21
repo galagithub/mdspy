@@ -5,7 +5,7 @@
 services:
   mdspy:
     build: .
-    image_name: mdspy
+    image: mdspy
     container_name: mdspy
     restart: unless-stopped
 

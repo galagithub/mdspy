@@ -341,6 +341,8 @@ $icon = match ($array['health']) {
 </table>
 
 <div class="footer">
+    Last updated: <?= gmdate('d M Y H:i:s') ?> UTC
+    &middot;
     Client IP: <?= htmlspecialchars($_SERVER['REMOTE_ADDR'] ?? 'Unknown') ?>
 </div>
 
